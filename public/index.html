@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <title>Store Badges Example</title>
+      <script src="/os-detection.js"></script>
+      <style>
+        html {
+          font-family: sans-serif;
+        }
+
+        .badge-list {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          column-gap: 1rem;
+          list-style: none;
+          padding: 0;
+          background-color: beige;
+          border-radius: 0.5rem;
+          margin-top: 1rem;
+          padding: 1rem;
+        }
+
+        .badge-img {
+          display: none;
+          height: 3rem;
+          width: auto;
+        }
+
+        html[lang="en"] .badge-img-en {
+          display: block;
+        }
+        html[lang="de"] .badge-img-de {
+          display: block;
+        }
+        html[lang="fr"] .badge-img-fr {
+          display: block;
+        }
+        html[data-os="ios"] .badge-android {
+          display: none;
+        }
+        html[data-os="android"] .badge-ios {
+          display: none;
+        }
+      </style>
+    </head>
+    <body>
+      <article>
+        <h1>Example to display Store Badges based on the OS.</h1>
+        <div>
+          <label for="language-select">Language</label>
+          <select name="language" id="language-select">
+            <option value="en" selected>EN</option>
+            <option value="de">DE</option>
+            <option value="fr">FR</option>
+          </select>
+        </div>
+        <div>
+          <label for="os-select">Operating system</label>
+          <select name="os" id="os-select">
+            <option value="" id="default-option" disabled selected>Foo</option>
+            <option value="ios">iOS</option>
+            <option value="android">Android</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <ul class="badge-list">
+          <li>
+            <a class="badge badge-ios" href="#">
+              <img class="badge-img badge-img-en" src="/assets/ios/ios_badge_en.svg" />
+              <img class="badge-img badge-img-de" src="/assets/ios/ios_badge_de.svg" />
+              <img class="badge-img badge-img-fr" src="/assets/ios/ios_badge_fr.svg" />
+            </a>
+          </li>
+          <li>
+            <a class="badge badge-android" href="#">
+              <img class="badge-img badge-img-en" src="/assets/android/android_badge_en.svg" />
+              <img class="badge-img badge-img-de" src="/assets/android/android_badge_de.svg" />
+              <img class="badge-img badge-img-fr" src="/assets/android/android_badge_fr.svg" />
+            </a>
+          </li>
+        </ul>
+      </article>
+      <script>
+        function changeLanguage(language) {
+          document.querySelector('html').setAttribute('lang', language);
+        }
+        
+        function changeOS(os) {
+          document.querySelector('html').setAttribute('data-os', os);
+        }
+
+        document.querySelector('#language-select').addEventListener(
+          'change',
+          function(event) {
+            changeLanguage(event.target.value);
+          }
+        );
+        document.querySelector('#os-select').addEventListener(
+          'change',
+          function(event) {
+            changeOS(event.target.value);
+          }
+        );
+        var detectedOS = getMobileOperatingSystem();
+        document.querySelector('#default-option').textContent = 'Detected: '.concat(detectedOS)
+        changeOS(detectedOS)
+      </script>
+    </body>
+  </html>
